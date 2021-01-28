@@ -15,6 +15,13 @@ public class behavior : MonoBehaviour
     public float movementSpeedSpeedUp = 0.6f;
     [Range(0, 100)]
     public float jumpMod = 1.5f;
+
+    private int health = 3;
+    [Range(0,100)]
+    public float healthCoolDownMax = 5;
+    private float healthCoolDown = 0;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,7 +63,7 @@ public class behavior : MonoBehaviour
         }
 
         transform.Translate(Vector3.left * movementSpeed * Time.deltaTime);
-
+        healthCoolDown -= Time.deltaTime;
     }
 
 
@@ -88,8 +95,17 @@ public class behavior : MonoBehaviour
     {
         if(collision.gameObject.layer == LayerMask.NameToLayer("Death"))
         {
-            transform.position = Vector3.zero;
-            movementSpeed = 0;
+            if (healthCoolDown <= 0)
+            {
+                health--;
+                if (health == 0)
+                {
+                    transform.position = Vector3.zero;
+                    movementSpeed = 0;
+                    health = 3;
+                }
+                healthCoolDown = healthCoolDownMax;
+            }
         }
     }
 }
