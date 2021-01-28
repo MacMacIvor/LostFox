@@ -10,7 +10,7 @@ public class behavior : MonoBehaviour
 
     private float movementSpeed = 0;
     [Range(0,100)]
-    public float movementSpeedMax = 3;
+    public float movementSpeedMax = 1;
     [Range(0, 100)]
     public float movementSpeedSpeedUp = 0.6f;
     [Range(0, 100)]
@@ -21,7 +21,9 @@ public class behavior : MonoBehaviour
     public float healthCoolDownMax = 5;
     private float healthCoolDown = 0;
 
-
+    [Range(0, 100)]
+    public float dashStrength = 10;
+    private bool wantsToDash = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -31,13 +33,40 @@ public class behavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
         {
-            changeSpeed(-1);
+            wantsToDash = true;
+        }
+
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        {
+            switch (wantsToDash)
+            {
+                case true:
+                    changeSpeed(1, false, 1);
+                    wantsToDash = false;
+                    break;
+                case false:
+                    changeSpeed(1);
+                    wantsToDash = false;
+                    break;
+            }
+
         }
         else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
-            changeSpeed(1);
+            
+            switch (wantsToDash)
+            {
+                case true:
+                    changeSpeed(-1, false, 1);
+                    wantsToDash = false;
+                    break;
+                case false:
+                    changeSpeed(-1);
+                    wantsToDash = false;
+                    break;
+            }
         }
         else
         {
@@ -47,22 +76,24 @@ public class behavior : MonoBehaviour
                     changeSpeed(1, true);
                     break;
                 case 1:
-                    movementSpeed /= 2;
-                    if (movementSpeed >= -0.2 && movementSpeed <= 0.2)
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(gameObject.GetComponent<Rigidbody>().velocity.x / 1.05f, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
+                    if (gameObject.GetComponent<Rigidbody>().velocity.x >= -0.2 && gameObject.GetComponent<Rigidbody>().velocity.x <= 0.2)
                     {
-                        movementSpeed = 0;
+                        gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
                     }
-                    
+
                     break;
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+        
+
+        if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) && gameObject.GetComponent<Rigidbody>().velocity.y == 0)
         {
             gameObject.GetComponent<Rigidbody>().velocity += (Vector3.up * jumpMod);
         }
 
-        transform.Translate(Vector3.left * movementSpeed * Time.deltaTime);
+        
         healthCoolDown -= Time.deltaTime;
     }
 
@@ -73,17 +104,27 @@ public class behavior : MonoBehaviour
         switch (instantOrSmooth)
         {
             case 0:
-                movementSpeed = movementSpeedMax * direction;
+                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(movementSpeedMax * direction, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
                 if (fullStop == true)
                 {
-                    movementSpeed = 0;
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
+                }
+                if (extraSpeed == 1)
+                {
+                    //gameObject.GetComponent<Rigidbody>().velocity = new Vector3(dashStrength * direction, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
+                    transform.position += Vector3.right * dashStrength * direction;
                 }
                 break;
             case 1:
-                movementSpeed += movementSpeedSpeedUp * direction;
-                if (Mathf.Abs(movementSpeed) > Mathf.Abs(movementSpeedMax))
+                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(gameObject.GetComponent<Rigidbody>().velocity.x + movementSpeedSpeedUp * direction, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
+                if (Mathf.Abs(gameObject.GetComponent<Rigidbody>().velocity.x) > Mathf.Abs(movementSpeedMax))
                 {
-                    movementSpeed = movementSpeedMax * direction;
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(movementSpeedMax * direction, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
+                }
+                if (extraSpeed == 1)
+                {
+                    //gameObject.GetComponent<Rigidbody>().velocity = new Vector3(dashStrength * direction, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
+                    transform.position += Vector3.right * dashStrength * direction;
                 }
                 break;
         }
@@ -101,7 +142,7 @@ public class behavior : MonoBehaviour
                 if (health == 0)
                 {
                     transform.position = Vector3.zero;
-                    movementSpeed = 0;
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
                     health = 3;
                 }
                 healthCoolDown = healthCoolDownMax;

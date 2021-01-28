@@ -428,8 +428,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   instantOrSmooth: 1
   movementSpeedMax: 10
-  movementSpeedSpeedUp: 1.5
+  movementSpeedSpeedUp: 0.6
   jumpMod: 1.5
+  healthCoolDownMax: 5
+  dashStrength: 1
 --- !u!1 &2036627886
 GameObject:
   m_ObjectHideFlags: 0
