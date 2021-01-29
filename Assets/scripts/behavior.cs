@@ -24,6 +24,12 @@ public class behavior : MonoBehaviour
     [Range(0, 100)]
     public float dashStrength = 10;
     private bool wantsToDash = false;
+
+    [Range(0, 100)]
+    public float sprintStrengthSaved = 2.5f;
+    private float sprintStrength = 1.0f;
+    private bool isSprinting = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +42,18 @@ public class behavior : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
         {
             wantsToDash = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.X)){
+            isSprinting = !isSprinting;
+            if (isSprinting == true)
+            {
+                sprintStrength = sprintStrengthSaved;
+            }
+            else
+            {
+                sprintStrength = 1.0f;
+            }
         }
 
         if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
@@ -88,7 +106,7 @@ public class behavior : MonoBehaviour
 
         
 
-        if(Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) && gameObject.GetComponent<Rigidbody>().velocity.y == 0)
+        if((Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && gameObject.GetComponent<Rigidbody>().velocity.y == 0)
         {
             gameObject.GetComponent<Rigidbody>().velocity += (Vector3.up * jumpMod);
         }
@@ -104,7 +122,7 @@ public class behavior : MonoBehaviour
         switch (instantOrSmooth)
         {
             case 0:
-                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(movementSpeedMax * direction, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
+                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(movementSpeedMax * direction * sprintStrength, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
                 if (fullStop == true)
                 {
                     gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
@@ -116,8 +134,8 @@ public class behavior : MonoBehaviour
                 }
                 break;
             case 1:
-                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(gameObject.GetComponent<Rigidbody>().velocity.x + movementSpeedSpeedUp * direction, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
-                if (Mathf.Abs(gameObject.GetComponent<Rigidbody>().velocity.x) > Mathf.Abs(movementSpeedMax))
+                gameObject.GetComponent<Rigidbody>().velocity = new Vector3(gameObject.GetComponent<Rigidbody>().velocity.x + movementSpeedSpeedUp * direction * sprintStrength, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
+                if (Mathf.Abs(gameObject.GetComponent<Rigidbody>().velocity.x) > Mathf.Abs(movementSpeedMax * sprintStrength))
                 {
                     gameObject.GetComponent<Rigidbody>().velocity = new Vector3(movementSpeedMax * direction, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
                 }

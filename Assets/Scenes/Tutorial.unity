@@ -1486,6 +1486,7 @@ MonoBehaviour:
   jumpMod: 7
   healthCoolDownMax: 5
   dashStrength: 1
+  sprintStrengthSaved: 5.8
 --- !u!1 &1802784406
 GameObject:
   m_ObjectHideFlags: 0
