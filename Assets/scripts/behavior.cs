@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class behavior : MonoBehaviour
 {
@@ -29,6 +30,12 @@ public class behavior : MonoBehaviour
     public float sprintStrengthSaved = 2.5f;
     private float sprintStrength = 1.0f;
     private bool isSprinting = false;
+
+    private bool isGrounded = false;
+
+    public Animator fox;
+    public RawImage[] foxHealth;
+
 
     // Start is called before the first frame update
     void Start()
@@ -106,12 +113,14 @@ public class behavior : MonoBehaviour
 
         
 
-        if((Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && gameObject.GetComponent<Rigidbody>().velocity.y == 0)
+        if((Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) && isGrounded == true)
         {
             gameObject.GetComponent<Rigidbody>().velocity += (Vector3.up * jumpMod);
+            isGrounded = false;
+            fox.SetBool("jumping", isGrounded);
+
         }
 
-        
         healthCoolDown -= Time.deltaTime;
     }
 
@@ -162,9 +171,21 @@ public class behavior : MonoBehaviour
                     transform.position = Vector3.zero;
                     gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
                     health = 3;
+                    foxHealth[1].transform.position -= Vector3.up * 100;
+                    foxHealth[2].transform.position -= Vector3.up * 100;
+                    
+                }
+                else
+                {
+                    foxHealth[health].transform.position += Vector3.up * 100;
                 }
                 healthCoolDown = healthCoolDownMax;
             }
+        }
+        if(collision.gameObject.transform.position.y + collision.gameObject.GetComponent<Collider>().bounds.size.y / 2 < transform.position.y) //Make sure the collision is the underneath ish of the fox
+        {
+            isGrounded = true;
+            fox.SetBool("jumping", isGrounded);
         }
     }
 }
