@@ -18,8 +18,8 @@ public class behavior : MonoBehaviour
     public float jumpMod = 1.5f;
 
     private int health = 3;
-    [Range(0,100)]
-    public float healthCoolDownMax = 5;
+    
+    private float healthCoolDownMax = 5; //No longer really used
     private float healthCoolDown = 0;
 
     [Range(0, 100)]
@@ -36,11 +36,17 @@ public class behavior : MonoBehaviour
     public Animator fox;
     public RawImage[] foxHealth;
 
+    [Range(0, 3)]
+    public float flashTime = 0.2f;
+    [Range(0, 3)]
+    public float flashDuration = 1.0f;
+
+    public ParticleSystem dust;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame
@@ -77,6 +83,8 @@ public class behavior : MonoBehaviour
                     break;
             }
 
+            transform.GetChild(1).transform.LookAt(transform.position + new Vector3(0,0,1));
+
         }
         else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
@@ -92,6 +100,7 @@ public class behavior : MonoBehaviour
                     wantsToDash = false;
                     break;
             }
+            transform.GetChild(1).transform.LookAt(transform.position + new Vector3(0,0,-1));
         }
         else
         {
@@ -120,8 +129,14 @@ public class behavior : MonoBehaviour
             fox.SetBool("jumping", isGrounded);
 
         }
-
-        healthCoolDown -= Time.deltaTime;
+        if (isGrounded == true)
+        {
+            createDust(1);
+        }
+        else
+        {
+            createDust(0);
+        }
     }
 
 
@@ -158,6 +173,34 @@ public class behavior : MonoBehaviour
     }
 
 
+    //Player flashed when damaged
+    public void activateFlash()
+    {
+        StartCoroutine(flash(flashDuration, flashTime));
+    }
+
+    IEnumerator flash(float timeMax, float timeInterval)
+    {
+        float totTime = 0;
+        do
+        {
+            Renderer foxRender = GetComponentsInChildren<Renderer>()[1];
+
+            foxRender.enabled = false;
+
+            yield return new WaitForSeconds(timeInterval);
+            totTime += Time.deltaTime;
+
+
+            foxRender.enabled = true;
+
+            yield return new WaitForSeconds(timeInterval);
+            totTime += Time.deltaTime;
+
+
+        } while (totTime < timeMax);
+        healthCoolDown = 0;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -166,6 +209,7 @@ public class behavior : MonoBehaviour
             if (healthCoolDown <= 0)
             {
                 health--;
+                activateFlash();
                 if (health == 0)
                 {
                     transform.position = Vector3.zero;
@@ -188,4 +232,18 @@ public class behavior : MonoBehaviour
             fox.SetBool("jumping", isGrounded);
         }
     }
+
+    public void createDust(int num)
+    {
+        switch (num)
+        {
+            case 1:
+                dust.Play();
+                break;
+            case 0:
+                dust.Stop();
+                break;
+        }
+    }
+
 }
