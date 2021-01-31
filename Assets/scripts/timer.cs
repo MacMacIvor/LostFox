@@ -43,7 +43,7 @@ public class timer : MonoBehaviour
                 stillCredits = true;
                 string objectsData;
 
-                using (var line = new StreamReader(Application.dataPath + "/timeSaved/bestTime.txt"))
+                using (var line = new StreamReader(System.IO.Directory.GetCurrentDirectory() + "/timeSaved/bestTime.txt"))
                     while ((objectsData = line.ReadLine()) != null) //Set up this way in case in the future we want to add times for each individual level
                     {
 
@@ -61,9 +61,9 @@ public class timer : MonoBehaviour
     public void saveTime()
     {
         string objectsData;
-        float savedTime = 9999999999999999999;
+        float savedTime = 99999;
 
-        using (var line = new StreamReader(Application.dataPath + "/timeSaved/bestTime.txt"))
+        using (var line = new StreamReader(System.IO.Directory.GetCurrentDirectory() + "/timeSaved/bestTime.txt"))
             while ((objectsData = line.ReadLine()) != null) //Set up this way in case in the future we want to add times for each individual level
             {
                 savedTime = float.Parse(objectsData);
@@ -71,7 +71,7 @@ public class timer : MonoBehaviour
             }
         if (savedTime > timePassed)
         {
-            using (StreamWriter outputFile = new StreamWriter(Application.dataPath + "/timeSaved/bestTime.txt"))
+            using (StreamWriter outputFile = new StreamWriter(System.IO.Directory.GetCurrentDirectory() + "/timeSaved/bestTime.txt"))
             {
                 outputFile.Write(timePassed);
             }

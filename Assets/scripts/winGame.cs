@@ -18,7 +18,14 @@ public class winGame : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        timer.singleton.saveTime();
+        callSaveFile();
         SceneManager.LoadScene("Credits");
     }
+
+    private void callSaveFile()
+    {
+        timer.singleton.saveTime();
+
+    }
+
 }
