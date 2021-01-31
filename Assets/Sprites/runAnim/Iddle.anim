@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: FoxJump
+  m_Name: Iddle
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,13 +20,11 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: d7122c98dd74f8f4ca2fad9d37e424f1, type: 3}
-    - time: 0.05
-      value: {fileID: 21300000, guid: 960216ac9cb5eb84e8a489092118261a, type: 3}
-    - time: 0.38333333
-      value: {fileID: 21300000, guid: bd591e967216778488f2d99ea9a5f0a1, type: 3}
-    - time: 0.9166667
-      value: {fileID: 21300000, guid: d7122c98dd74f8f4ca2fad9d37e424f1, type: 3}
+      value: {fileID: 21300000, guid: b3f4acdd7e0fc4849a5ced69ca50b5c7, type: 3}
+    - time: 0.25
+      value: {fileID: 21300000, guid: 20e8a82ca0a54f44993cf709d5a6a8a6, type: 3}
+    - time: 0.5
+      value: {fileID: 21300000, guid: b3f4acdd7e0fc4849a5ced69ca50b5c7, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -46,16 +44,15 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: d7122c98dd74f8f4ca2fad9d37e424f1, type: 3}
-    - {fileID: 21300000, guid: 960216ac9cb5eb84e8a489092118261a, type: 3}
-    - {fileID: 21300000, guid: bd591e967216778488f2d99ea9a5f0a1, type: 3}
-    - {fileID: 21300000, guid: d7122c98dd74f8f4ca2fad9d37e424f1, type: 3}
+    - {fileID: 21300000, guid: b3f4acdd7e0fc4849a5ced69ca50b5c7, type: 3}
+    - {fileID: 21300000, guid: 20e8a82ca0a54f44993cf709d5a6a8a6, type: 3}
+    - {fileID: 21300000, guid: b3f4acdd7e0fc4849a5ced69ca50b5c7, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.93333334
+    m_StopTime: 0.51666665
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

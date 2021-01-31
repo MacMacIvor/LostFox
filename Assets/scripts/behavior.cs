@@ -85,6 +85,8 @@ public class behavior : MonoBehaviour
 
             transform.GetChild(1).transform.LookAt(transform.position + new Vector3(0,0,1));
 
+            fox.SetFloat("Speed", 0.6f);
+
         }
         else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
@@ -101,6 +103,10 @@ public class behavior : MonoBehaviour
                     break;
             }
             transform.GetChild(1).transform.LookAt(transform.position + new Vector3(0,0,-1));
+
+            fox.SetFloat("Speed", 0.6f);
+
+
         }
         else
         {
@@ -114,6 +120,8 @@ public class behavior : MonoBehaviour
                     if (gameObject.GetComponent<Rigidbody>().velocity.x >= -0.2 && gameObject.GetComponent<Rigidbody>().velocity.x <= 0.2)
                     {
                         gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
+                        fox.SetFloat("Speed", 0.0f);
+
                     }
 
                     break;
@@ -231,6 +239,7 @@ public class behavior : MonoBehaviour
             isGrounded = true;
             fox.SetBool("jumping", isGrounded);
         }
+        fox.SetBool("Running", isSprinting);
     }
 
     public void createDust(int num)
