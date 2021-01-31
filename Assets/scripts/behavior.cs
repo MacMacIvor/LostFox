@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class behavior : MonoBehaviour
 {
@@ -46,6 +47,9 @@ public class behavior : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (SceneManager.GetActiveScene().name == "1")
+            timer.singleton.resetTime();
+
         Time.timeScale = 1;
     }
 
