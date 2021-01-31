@@ -14,10 +14,10 @@ public class timer : MonoBehaviour
     public static timer singleton;
     private void Awake()
     {
-        DontDestroyOnLoad(this);
         if (singleton == null)
         {
             singleton = this;
+            DontDestroyOnLoad(gameObject);
             return;
         }
         Destroy(this);
@@ -30,7 +30,7 @@ public class timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        timePassed = PlayerPrefs.GetFloat("timePassed", 0.0f);
     }
 
     // Update is called once per frame
@@ -47,7 +47,7 @@ public class timer : MonoBehaviour
                     while ((objectsData = line.ReadLine()) != null) //Set up this way in case in the future we want to add times for each individual level
                     {
 
-                        timerShowString.text = line.ReadLine();
+                        timerShowString.text = objectsData;
 
                     }
             }
@@ -76,6 +76,11 @@ public class timer : MonoBehaviour
                 outputFile.Write(timePassed);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        PlayerPrefs.SetFloat("timePassed", timePassed);
     }
     public void resetTime()
     {

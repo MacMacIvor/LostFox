@@ -56,13 +56,26 @@ public class behavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
-        {
-            wantsToDash = true;
-        }
+        //if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        //{
+        //    wantsToDash = true;
+        //}
 
-        if (Input.GetKeyDown(KeyCode.X)){
-            isSprinting = !isSprinting;
+        if (Input.GetKey(KeyCode.X) || Input.GetKey(KeyCode.Space))
+        {
+            isSprinting = true;
+            if (isSprinting == true)
+            {
+                sprintStrength = sprintStrengthSaved;
+            }
+            else
+            {
+                sprintStrength = 1.0f;
+            }
+        }
+        else
+        {
+            isSprinting = !true;
             if (isSprinting == true)
             {
                 sprintStrength = sprintStrengthSaved;
@@ -224,7 +237,7 @@ public class behavior : MonoBehaviour
                 activateFlash();
                 if (health == 0)
                 {
-                    transform.position = Vector3.zero;
+                    transform.position = new Vector3(0, 9.86f, 0);
                     gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, gameObject.GetComponent<Rigidbody>().velocity.y, gameObject.GetComponent<Rigidbody>().velocity.z);
                     health = 3;
                     foxHealth[1].transform.position -= Vector3.up * 100;

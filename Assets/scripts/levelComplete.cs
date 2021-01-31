@@ -19,6 +19,7 @@ public class levelComplete : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+
         SceneManager.LoadScene((int.Parse(SceneManager.GetActiveScene().name) + 1).ToString());
     }
 }

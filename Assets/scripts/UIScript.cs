@@ -17,7 +17,7 @@ public class UIScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((Input.GetMouseButtonDown(0)) && Input.mousePosition.x > transform.position.x - GetComponent<RectTransform>().rect.width && Input.mousePosition.x < transform.position.x + GetComponent<RectTransform>().rect.width && Input.mousePosition.y < transform.position.y + GetComponent<RectTransform>().rect.height && Input.mousePosition.y > transform.position.y - GetComponent<RectTransform>().rect.height)
+        if ((Input.GetMouseButtonDown(0)) && Input.mousePosition.x > transform.position.x - GetComponent<RectTransform>().rect.width / 2 && Input.mousePosition.x < transform.position.x + GetComponent<RectTransform>().rect.width / 2 && Input.mousePosition.y < transform.position.y + GetComponent<RectTransform>().rect.height / 2 && Input.mousePosition.y > transform.position.y - GetComponent<RectTransform>().rect.height / 2)
         {
             
             switch (typeOfUI)

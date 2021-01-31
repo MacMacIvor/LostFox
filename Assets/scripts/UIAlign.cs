@@ -16,17 +16,17 @@ public class UIAlign : MonoBehaviour
     void Start()
     {
         canvas = FindObjectOfType<Canvas>();
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         for (int i = 0; i < foxHealth.Length; i++)
         {
             foxHealth[i].transform.localPosition = new Vector3(-canvas.GetComponent<RectTransform>().rect.width / 2 + 85 + 100 * i, canvas.GetComponent<RectTransform>().rect.height / 2 - 50, 0);
             //85162
         }
         timerString.transform.localPosition = new Vector3(canvas.GetComponent<RectTransform>().rect.width / 2 - 162, canvas.GetComponent<RectTransform>().rect.height / 2 - 40, 0);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
 }
